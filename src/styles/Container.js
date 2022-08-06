@@ -16,12 +16,16 @@ export const BaseContainer = styled.div`
         font-size: 1.1rem;
     }
 
+    .login__header {
+        margin-top: 1rem;
+    }
+
     .register__header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         width: 95%;
         max-width: 20rem;
-        margin-bottom: 1rem;
+        margin: 3rem 0 1rem 0;
     }
 `;

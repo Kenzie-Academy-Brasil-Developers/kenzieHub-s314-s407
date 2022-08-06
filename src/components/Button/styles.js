@@ -27,4 +27,9 @@ export const SecondaryButton = styled.button`
   color: var(--color-grey-0);
   padding: 0.6rem 1rem;
   border-radius: 4px;
+  transition: 200ms ease-in-out;
+
+  &:hover {
+    background-color: var(--color-grey-2);
+  }
 `;
