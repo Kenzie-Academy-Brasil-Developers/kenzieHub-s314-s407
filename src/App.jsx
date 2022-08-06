@@ -1,17 +1,19 @@
 import { useState } from "react";
 import AppRoutes from "./routes";
 
+import GlobalStyle from "./styles/global";
+import { BaseContainer } from "./styles/Container";
+import NotificationBox from "./components/MessagePopup";
+
 const App = () => {
   const [message, setMessage] = useState("");
   
   return (
-    <div className="App">
-      <div className="error">
-        <figure></figure>
-        <h5>{message}</h5>
-      </div>
+    <BaseContainer>
+      <GlobalStyle />
+      <NotificationBox content={message}/>
       <AppRoutes handleMessage={setMessage} />
-    </div>
+    </BaseContainer>
   );
 };
 

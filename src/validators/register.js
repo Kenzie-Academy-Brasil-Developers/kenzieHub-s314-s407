@@ -10,10 +10,9 @@ const registerSchema = yup.object().shape({
     .string()
     .min(8, "A senha deve conter no mínimo 8 caracteres")
     .matches(
-        /(^(?=.*?\d)(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\W|_])).+$/,
-      "A senha deve conter letras maiúsculas, minúsculas, números e símbolo"
+      /(^(?=.*?\d)(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\W|_])).+$/,
+      "Deve conter: letras maiúsculas, minúsculas, números e símbolo"
     ),
-    
   password_confirm: yup
     .string()
     .oneOf([yup.ref("password")], "As senhas devem ser idênticas"),

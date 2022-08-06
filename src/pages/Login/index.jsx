@@ -4,11 +4,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import api from "../../services/api";
 import loginSchema from "../../validators/login";
+import Formulary from "../../components/Formulary";
+import CustomInput from "../../components/Input";
+import Button from "../../components/Button";
 
 const Login = ({ handleMessage, handleUser }) => {
   const navigate = useNavigate();
 
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit, formState: {errors} } = useForm({
     resolver: yupResolver(loginSchema),
   });
 
@@ -17,7 +20,10 @@ const Login = ({ handleMessage, handleUser }) => {
       .post("/sessions", { ...data })
       .then((response) => {
         window.localStorage.clear();
-        window.localStorage.setItem("@kenzieHub: authToken", response.data.token);
+        window.localStorage.setItem(
+          "@kenzieHub: authToken",
+          response.data.token
+        );
 
         const user = response.data.user;
         handleMessage(`Bem vindo ${user.name.split(" ")[0]}!`);
@@ -30,25 +36,29 @@ const Login = ({ handleMessage, handleUser }) => {
 
   return (
     <>
-      <h1>Kenzie Hub</h1>
-      <form onSubmit={handleSubmit(submitLogin)}>
+      <h1 className="login__header">Kenzie Hub</h1>
+      <Formulary onSubmit={handleSubmit(submitLogin)}>
         <h3>Login</h3>
-        <label htmlFor="">Email</label>
-        <input
-          type="text"
+        <CustomInput
+          id="email"
+          label="Email"
           placeholder="Insira seu email"
-          {...register("email")}
+          register={register}
+          error={errors?.email}
+        />
+        <CustomInput
+          id="password"
+          label="Senha"
+          type="password"
+          placeholder="Insira sua senha"
+          register={register}
+          error={errors?.password}
         />
 
-        <label htmlFor="">Senha</label>
-        <input type="password" placeholder="Senha" {...register("password")} />
-
-        <button type="submit">Entrar</button>
+        <Button submit buttonStyle="primary">Entrar</Button>
         <span>Ainda não possui uma conta?</span>
-        <button onClick={() => navigate("/register")} type="submit">
-          Cadastre-se
-        </button>
-      </form>
+        <Button handler={() => navigate("/register")} buttonStyle="primary">Cadastre-se</Button>
+      </Formulary>
     </>
   );
 };
