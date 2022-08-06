@@ -8,12 +8,30 @@ import Formulary from "../../components/Formulary";
 import CustomInput from "../../components/Input";
 import Button from "../../components/Button";
 
-const Login = ({ handleMessage, handleUser }) => {
+const Login = ({ message, handleMessage, handleUser }) => {
   const navigate = useNavigate();
 
-  const { register, handleSubmit, formState: {errors} } = useForm({
+  const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(loginSchema),
   });
+
+  const handleNotification = (input, type) => {
+    if (message.status) {
+      handleMessage({ ...message, status: false });
+
+      handleMessage({ message: input, type: type, status: true });
+
+      setTimeout(() => {
+        handleMessage({ ...message, status: false });
+      }, 5000);
+    } else {
+      handleMessage({ message: input, type: type, status: !message.status });
+
+      setTimeout(() => {
+        handleMessage({ ...message, status: false });
+      }, 5000);
+    }
+  };
 
   const submitLogin = (data) => {
     api
@@ -26,12 +44,12 @@ const Login = ({ handleMessage, handleUser }) => {
         );
 
         const user = response.data.user;
-        handleMessage(`Bem vindo ${user.name.split(" ")[0]}!`);
+        handleNotification(`Bem vindo ${user.name.split(" ")[0]}!`, "SUCCESS");
         handleUser(user);
 
         navigate("/dashboard");
       })
-      .catch(() => handleMessage("Login ou senha incorretos"));
+      .catch(() => handleNotification("Login ou senha incorretos", "FAIL"));
   };
 
   return (
@@ -42,6 +60,7 @@ const Login = ({ handleMessage, handleUser }) => {
         <CustomInput
           id="email"
           label="Email"
+          type="email"
           placeholder="Insira seu email"
           register={register}
           error={errors?.email}
@@ -55,9 +74,13 @@ const Login = ({ handleMessage, handleUser }) => {
           error={errors?.password}
         />
 
-        <Button submit buttonStyle="primary">Entrar</Button>
+        <Button submit buttonStyle="primary">
+          Entrar
+        </Button>
         <span>Ainda não possui uma conta?</span>
-        <Button handler={() => navigate("/register")} buttonStyle="primary">Cadastre-se</Button>
+        <Button handler={() => navigate("/register")} buttonStyle="primary">
+          Cadastre-se
+        </Button>
       </Formulary>
     </>
   );

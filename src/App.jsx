@@ -3,16 +3,21 @@ import AppRoutes from "./routes";
 
 import GlobalStyle from "./styles/global";
 import { BaseContainer } from "./styles/Container";
-import NotificationBox from "./components/MessagePopup";
+import NotificationBox from "./components/NotificationBox";
+import { useEffect } from "react";
 
 const App = () => {
-  const [message, setMessage] = useState("");
-  
+  const [messageStatus, setMessageStatus] = useState({
+    message: "",
+    type: "",
+    status: false,
+  });
+
   return (
     <BaseContainer>
       <GlobalStyle />
-      <NotificationBox content={message}/>
-      <AppRoutes handleMessage={setMessage} />
+      <NotificationBox content={messageStatus} />
+      <AppRoutes message={messageStatus} handleMessage={setMessageStatus} />
     </BaseContainer>
   );
 };

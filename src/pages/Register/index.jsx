@@ -8,12 +8,31 @@ import Formulary from "../../components/Formulary";
 import CustomInput from "../../components/Input";
 import Button from "../../components/Button";
 
-const Register = ({ handleMessage }) => {
+const Register = ({ message, handleMessage }) => {
   const navigate = useNavigate();
   
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(registerSchema),
   });
+
+  
+  const handleNotification = (input, type) => {
+    if (message.status) {
+      handleMessage({ ...message, status: false });
+
+      handleMessage({ message: input, type: type, status: true });
+
+      setTimeout(() => {
+        handleMessage({ ...message, status: false });
+      }, 5000);
+    } else {
+      handleMessage({ message: input, type: type, status: !message.status });
+
+      setTimeout(() => {
+        handleMessage({ ...message, status: false });
+      }, 5000);
+    }
+  };
 
   const registerUser = ({ name, email, password, bio, contact, course_module }) => {
     const options = {
@@ -27,10 +46,10 @@ const Register = ({ handleMessage }) => {
     api
     .post("/users", options)
     .then(() => {
-      handleMessage("Conta criada com sucesso!");
+      handleNotification("Conta criada com sucesso!", "SUCCESS");
       navigate("/login");
     })
-    .catch(() => handleMessage("Email atualmente em uso"));
+    .catch(() => handleNotification("Email atualmente em uso", "FAIL"));
   };
 
   return (
@@ -83,6 +102,7 @@ const Register = ({ handleMessage }) => {
         <CustomInput
           id="contact"
           label="Contato"
+          type="phone"
           placeholder="(00) 00000-0000"
           register={register}
           error={errors?.contact}

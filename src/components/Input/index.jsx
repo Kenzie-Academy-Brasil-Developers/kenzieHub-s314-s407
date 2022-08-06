@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { BiErrorCircle } from "react-icons/bi";
-// import { TextInputMask } from "react-native-masked-text";
+import Tooltip from "../Tooltip";
 
-import { ErrorTooltip, StyledInput, StyledSelect } from "./styles";
+import { StyledInput, StyledSelect } from "./styles";
 
 const CustomInput = ({
   select,
@@ -14,6 +13,14 @@ const CustomInput = ({
   error,
 }) => {
   const [blur, setBlur] = useState(false);
+
+  const setBorder = () => {
+    return error?.message
+      ? "1px solid var(--color-negative)"
+      : blur
+      ? "1px solid var(--color-grey-0)"
+      : "1px solid transparent";
+  };
 
   return (
     <>
@@ -33,7 +40,7 @@ const CustomInput = ({
         </StyledSelect>
       ) : (
         <>
-          <StyledInput isSelected={blur}>
+          <StyledInput border={setBorder}>
             <input
               id={id}
               type={type}
@@ -42,12 +49,7 @@ const CustomInput = ({
               onClick={() => setBlur(true)}
               onBlur={() => setBlur(false)}
             />
-            {error?.message && (
-              <ErrorTooltip>
-                <BiErrorCircle />
-                <p className="tooltip">{error.message}</p>
-              </ErrorTooltip>
-            )}
+            {error?.message && <Tooltip>{error.message}</Tooltip>}
           </StyledInput>
         </>
       )}
