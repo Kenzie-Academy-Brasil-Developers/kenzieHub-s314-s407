@@ -8,30 +8,12 @@ import Formulary from "../../components/Formulary";
 import CustomInput from "../../components/Input";
 import Button from "../../components/Button";
 
-const Login = ({ message, handleMessage, handleUser }) => {
+const Login = ({ handleUser, notificator }) => {
   const navigate = useNavigate();
 
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(loginSchema),
   });
-
-  const handleNotification = (input, type) => {
-    if (message.status) {
-      handleMessage({ ...message, status: false });
-
-      handleMessage({ message: input, type: type, status: true });
-
-      setTimeout(() => {
-        handleMessage({ ...message, status: false });
-      }, 5000);
-    } else {
-      handleMessage({ message: input, type: type, status: !message.status });
-
-      setTimeout(() => {
-        handleMessage({ ...message, status: false });
-      }, 5000);
-    }
-  };
 
   const submitLogin = (data) => {
     api
@@ -44,12 +26,12 @@ const Login = ({ message, handleMessage, handleUser }) => {
         );
 
         const user = response.data.user;
-        handleNotification(`Bem vindo ${user.name.split(" ")[0]}!`, "SUCCESS");
+        notificator(`Bem vindo ${user.name.split(" ")[0]}!`, "SUCCESS");
         handleUser(user);
 
         navigate("/dashboard");
       })
-      .catch(() => handleNotification("Login ou senha incorretos", "FAIL"));
+      .catch(() => notificator("Login ou senha incorretos", "FAIL"));
   };
 
   return (

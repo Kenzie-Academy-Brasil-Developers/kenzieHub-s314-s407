@@ -8,31 +8,12 @@ import Formulary from "../../components/Formulary";
 import CustomInput from "../../components/Input";
 import Button from "../../components/Button";
 
-const Register = ({ message, handleMessage }) => {
+const Register = ({ notificator }) => {
   const navigate = useNavigate();
   
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(registerSchema),
   });
-
-  
-  const handleNotification = (input, type) => {
-    if (message.status) {
-      handleMessage({ ...message, status: false });
-
-      handleMessage({ message: input, type: type, status: true });
-
-      setTimeout(() => {
-        handleMessage({ ...message, status: false });
-      }, 5000);
-    } else {
-      handleMessage({ message: input, type: type, status: !message.status });
-
-      setTimeout(() => {
-        handleMessage({ ...message, status: false });
-      }, 5000);
-    }
-  };
 
   const registerUser = ({ name, email, password, bio, contact, course_module }) => {
     const options = {
@@ -46,10 +27,10 @@ const Register = ({ message, handleMessage }) => {
     api
     .post("/users", options)
     .then(() => {
-      handleNotification("Conta criada com sucesso!", "SUCCESS");
+      notificator("Conta criada com sucesso!", "SUCCESS");
       navigate("/login");
     })
-    .catch(() => handleNotification("Email atualmente em uso", "FAIL"));
+    .catch(() => notificator("Email atualmente em uso", "FAIL"));
   };
 
   return (

@@ -28,6 +28,7 @@ const GlobalStyle = createGlobalStyle`
     body {
         box-sizing: border-box;
         padding: 0;
+        background-color: var(--color-grey-4);
     }
 
     button {

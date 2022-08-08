@@ -4,7 +4,6 @@ import AppRoutes from "./routes";
 import GlobalStyle from "./styles/global";
 import { BaseContainer } from "./styles/Container";
 import NotificationBox from "./components/NotificationBox";
-import { useEffect } from "react";
 
 const App = () => {
   const [messageStatus, setMessageStatus] = useState({

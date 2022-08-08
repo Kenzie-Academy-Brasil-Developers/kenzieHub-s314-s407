@@ -20,6 +20,7 @@ const registerSchema = yup.object().shape({
   contact: yup
     .string()
     .required("Adicione um telefone para contato.")
+    .max(11, "O contato deve conter no máximo 11 caracteres")
     .matches(
       /(\d{10,11}|\d{8,9})/,
       "O campo contato deve conter de 8 a 11 caracteres."

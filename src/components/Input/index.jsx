@@ -34,9 +34,9 @@ const CustomInput = ({
           onBlur={() => setBlur(false)}
           defaultValue="Módulo 1: (Frontend básico)"
         >
-          <option value="Módulo 1: (Frontend básico)">Módulo 1</option>
-          <option value="Módulo 2: (Frontend avançado)">Módulo 2</option>
-          <option value="Módulo 3: (React)">Módulo 3</option>
+          <option value="Módulo 1: Frontend básico">Módulo 1</option>
+          <option value="Módulo 2: Frontend avançado">Módulo 2</option>
+          <option value="Módulo 3: React">Módulo 3</option>
         </StyledSelect>
       ) : (
         <>

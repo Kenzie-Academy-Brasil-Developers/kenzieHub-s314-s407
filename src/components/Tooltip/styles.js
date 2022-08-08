@@ -4,6 +4,7 @@ export const ErrorTooltip = styled.div`
   display: flex;
   align-items: center;
   cursor: help;
+  z-index: 1;
 
   svg {
     height: 1.1rem;
