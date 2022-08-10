@@ -17,7 +17,7 @@ const Login = ({ handleUser, notificator }) => {
 
   const submitLogin = (data) => {
     api
-      .post("/sessions", { ...data })
+      .post("/sessions", data)
       .then((response) => {
         window.localStorage.clear();
         window.localStorage.setItem(
