@@ -41,34 +41,6 @@ const GlobalStyle = createGlobalStyle`
         transition: background-color infinite ease-in-out 0s;
         -webkit-text-fill-color: var(--color-grey-0);
     }
-
-    @keyframes loading-bar {
-        from {
-            width: 0%;
-        }
-
-        to {
-            width: 100%;
-        }
-    }
-
-    @keyframes slide-in {
-        0% {
-            right: calc(-16rem - 5%);
-        }
-
-        20% {
-            right: 0;
-        }
-
-        80% {
-            right: 0;
-        }
-
-        100% {
-            right: calc(-16rem - 5%);
-        }
-    }
 `;
 
 export default GlobalStyle;

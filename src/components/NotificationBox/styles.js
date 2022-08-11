@@ -2,18 +2,24 @@ import styled from "styled-components";
 
 export const NotificationContainer = styled.div`
   position: fixed;
-  right: -20rem;
+  right: 0;
   top: 3%;
   display: flex;
   flex-direction: column;
-  width: calc(16rem + 3%);
   gap: 0.5rem;
-  animation: slide-in 1 5s;
+  width: 17rem;
+  height: 20rem;
+  box-sizing: border-box;
   z-index: 1;
+  pointer-events: none;
 `;
 
 export const Notification = styled.div`
+  position: absolute;
+  left: 200%;
+  top: ${({yIndex}) => `calc(5rem * ${yIndex})`};
   display: flex;
+  animation: slide-in 1 5s linear;
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
@@ -61,5 +67,41 @@ export const Notification = styled.div`
 
   .n-negative {
     background-color: var(--color-negative);
+  }
+
+  @keyframes loading-bar {
+    from {
+      width: 0%;
+    }
+
+    to {
+      width: 100%;
+    }
+  }
+
+  @keyframes slide-in {
+    0% {
+      left: 200%;
+    }
+
+    15% {
+      left: -1%;
+    }
+
+    20% {
+      left: 0;
+    }
+
+    75% {
+      left: 0;
+    }
+
+    80% {
+      left: -1%;
+    }
+
+    100% {
+      left: 200%;
+    }
   }
 `;

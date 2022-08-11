@@ -1,43 +1,26 @@
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import api from "../../services/api";
 import loginSchema from "../../validators/login";
 import Formulary from "../../components/Formulary";
 import CustomInput from "../../components/Input";
 import Button from "../../components/Button";
+import { AuthContext } from "../../contexts/AuthContext";
 
-const Login = ({ handleUser, notificator }) => {
+const Login = () => {
   const navigate = useNavigate();
+  const { signIn } = useContext(AuthContext);
 
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(loginSchema),
   });
 
-  const submitLogin = (data) => {
-    api
-      .post("/sessions", data)
-      .then((response) => {
-        window.localStorage.clear();
-        window.localStorage.setItem(
-          "@kenzieHub: authToken",
-          response.data.token
-        );
-
-        const user = response.data.user;
-        notificator(`Bem vindo ${user.name.split(" ")[0]}!`, "SUCCESS");
-        handleUser(user);
-
-        navigate("/dashboard");
-      })
-      .catch(() => notificator("Login ou senha incorretos", "FAIL"));
-  };
-
   return (
     <>
       <h1 className="login__header">Kenzie Hub</h1>
-      <Formulary onSubmit={handleSubmit(submitLogin)}>
+      <Formulary onSubmit={handleSubmit(signIn)}>
         <h3>Login</h3>
         <CustomInput
           id="email"

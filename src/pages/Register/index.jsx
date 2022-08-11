@@ -1,37 +1,21 @@
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
+import { yupResolver } from "@hookform/resolvers/yup";
 
-import api from "../../services/api";
-import registerSchema from "../../validators/register";
-import Formulary from "../../components/Formulary";
-import CustomInput from "../../components/Input";
 import Button from "../../components/Button";
+import CustomInput from "../../components/Input";
+import Formulary from "../../components/Formulary";
+import registerSchema from "../../validators/register";
+import { AuthContext } from "../../contexts/AuthContext";
 
-const Register = ({ notificator }) => {
+const Register = () => {
   const navigate = useNavigate();
+  const { register: registerUser } = useContext(AuthContext)
   
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(registerSchema),
   });
-
-  const registerUser = ({ name, email, password, bio, contact, course_module }) => {
-    const options = {
-      name: name,
-      email: email,
-      password: password,
-      bio: bio,
-      contact: contact,
-      course_module: course_module,
-    };
-    api
-    .post("/users", options)
-    .then(() => {
-      notificator("Conta criada com sucesso!", "SUCCESS");
-      navigate("/login");
-    })
-    .catch(() => notificator("Email atualmente em uso", "FAIL"));
-  };
 
   return (
     <>
