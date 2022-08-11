@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { createContext, useState } from "react";
 import api from "../services/api";
 import { NotfContext } from "./NotificationContext";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 export const AuthContext = createContext({});
@@ -12,8 +12,9 @@ const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   const { notify } = useContext(NotfContext);
+  const location = useLocation();
   const navigate = useNavigate();
-  
+
   const signIn = async (data) => {
     const response = await api
       .post("/sessions", data)
@@ -24,13 +25,12 @@ const AuthProvider = ({ children }) => {
 
       localStorage.setItem("@kenzieHub(token)", token);
       api.defaults.headers.authorization = `Bearer ${token}`;
-      
+
       setUser(userData);
-      notify(`Bem vindo ${userData.name.split(" ")[0]}`, "SUCCESS")
-      
-      setTimeout(() => {
-        navigate("/dashboard", { replace: true });
-      }, 100);
+      notify(`Bem vindo ${userData.name.split(" ")[0]}`, "SUCCESS");
+
+      const navigatePath = location.state?.from?.pathname || "/dashboard";
+      navigate(navigatePath, { replace: true });
     }
   };
 
@@ -47,7 +47,7 @@ const AuthProvider = ({ children }) => {
     const response = await api
       .post("/users", options)
       .catch(() => notify("Email atualmente em uso", "FAIL"));
-    
+
     if (response) {
       notify("Conta criada com sucesso!", "SUCCESS");
       navigate("/login");
@@ -57,18 +57,18 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const loadAuth = async () => {
       const token = localStorage.getItem("@kenzieHub(token)");
-      
+
       if (token) {
         try {
           api.defaults.headers.authorization = `Bearer ${token}`;
           const { data } = await api.get("/profile");
-          
+
           setUser(data);
         } catch (error) {
           console.error(error);
         }
       }
-      setLoading(false)
+      setLoading(false);
     };
     loadAuth();
   }, []);

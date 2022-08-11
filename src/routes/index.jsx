@@ -1,24 +1,20 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+import PrivateRoutes from "../components/PrivateRoutes";
 
-import Home from "../pages/Dashboard";
+import Feed from "../pages/Feed";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+import Dashboard from "../pages/Dashboard";
 
-const AppRoutes = ({ message, handleMessage }) => {
-  const handleNotification = (input, type) => {
-    handleMessage(...message, { message: input, type: type });
-
-    setTimeout(() => {}, message.length > 0 ? 5000 : 1000);
-  };
-
+const AppRoutes = () => {
   return (
     <Routes>
       <Route index path="/login" element={<Login />} />
-      <Route path="/dashboard" element={<Home />} />
-      <Route
-        path="/register"
-        element={<Register notificator={handleNotification} />}
-      />
+      <Route element={<PrivateRoutes />}>
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/feed" element={<Feed />} />
+      </Route>
+      <Route path="/register" element={<Register />} />
       <Route path="*" element={<Navigate replace to="/login" />} />
     </Routes>
   );

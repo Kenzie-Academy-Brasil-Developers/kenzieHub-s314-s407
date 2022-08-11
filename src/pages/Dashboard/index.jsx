@@ -1,29 +1,24 @@
 import { useContext } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import Button from "../../components/Button";
-import LoadingScreen from "../../components/Loading";
 import { AuthContext } from "../../contexts/AuthContext";
 import { NotfContext } from "../../contexts/NotificationContext";
 
 import { DashboardPage, Header } from "./styles";
 
-const Home = () => {
+const Dashboard = () => {
   const navigate = useNavigate();
-  const { user, loading } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const { notify } = useContext(NotfContext);
 
   const handleLogout = () => {
     window.localStorage.clear();
-    notify(`Até a próxima ${user.name.split(" ")[0]}!`, )
+    notify(`Até a próxima ${user.name.split(" ")[0]}!`);
     navigate("/login");
   };
 
-  if (loading) {
-    return <LoadingScreen />
-  }
-
-  return user ? (
+  return (
     <DashboardPage>
       <Header>
         <h1>Kenzie Hub</h1>
@@ -40,9 +35,7 @@ const Home = () => {
         </p>
       </main>
     </DashboardPage>
-  ) : (
-    <Navigate replace to="/login" />
   );
 };
 
-export default Home;
+export default Dashboard;
