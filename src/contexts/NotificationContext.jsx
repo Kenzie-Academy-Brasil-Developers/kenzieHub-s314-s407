@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import { toast } from "react-toastify";
 
-import ToastBox from "../components/NotificationBox";
+import ToastBox from "../components/ToastBox";
 import AuthProvider from "./AuthContext";
 import "react-toastify/dist/ReactToastify.css";
 

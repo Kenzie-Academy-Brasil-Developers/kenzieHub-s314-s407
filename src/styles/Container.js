@@ -5,7 +5,6 @@ export const BaseContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1rem;
     min-height: 100vh;
 
     background-color: var(--color-grey-4);
@@ -17,7 +16,7 @@ export const BaseContainer = styled.div`
     }
 
     .login__header {
-        margin-top: 1rem;
+        margin: 1rem 0 1.5rem 0;
     }
 
     .register__header {

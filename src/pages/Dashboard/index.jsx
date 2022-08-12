@@ -1,41 +1,47 @@
-import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { FaRegTrashAlt } from "react-icons/fa";
+import { BsPlusLg } from "react-icons/bs";
 
 import Button from "../../components/Button";
-import { AuthContext } from "../../contexts/AuthContext";
-import { NotificationContext } from "../../contexts/NotificationContext";
+import PrivateContent from "../../components/PrivateContent";
 
-import { DashboardPage, Header } from "./styles";
+import { DashboardContent } from "./styles";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const Dashboard = () => {
-  const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
-  const { toast, baseSettings } = useContext(NotificationContext);
-
-  const handleLogout = () => {
-    
-    toast.info("Logout realizado com sucesso", baseSettings);
-    window.localStorage.clear();
-    navigate("/login");
-  };
+  const { user, deleteTech } = useContext(AuthContext);
 
   return (
-    <DashboardPage>
-      <Header>
-        <h1>Kenzie Hub</h1>
-        <Button handler={handleLogout}>Sair</Button>
-      </Header>
-      <section>
-        <h2>Olá, {user.name}</h2>
-        <span>{user.course_module}</span>
-      </section>
-      <main>
-        <h3>Que pena! Estamos em desenvolvimento :{"("}</h3>
-        <p>
-          Nossa aplicação está em desenvolvimento, em breve teremos novidades
-        </p>
-      </main>
-    </DashboardPage>
+    <PrivateContent>
+      <DashboardContent>
+        <section className="content__tech">
+          <h3>Tecnologias</h3>
+          <Button buttonStyle="secondary">
+            <BsPlusLg />
+          </Button>
+        </section>
+        <ul className="content__list">
+          {user.techs.length > 0 ? user.techs.map((tech) => {
+            return (
+              <li className="list__skill" key={tech.id}>
+                <h4>{tech.title}</h4>
+                <div className="skill__details">
+                  <span>{tech.status}</span>
+                  <button onClick={() => deleteTech(tech.id)}>
+                    <FaRegTrashAlt />
+                  </button>
+                </div>
+              </li>
+            );
+          }) : (
+          <li className="list__empty">
+            <h3>Parece que seu portfólio está vazio...</h3>
+            <button>Adicionar tecnologias</button>
+          </li>
+          )}
+        </ul>
+      </DashboardContent>
+    </PrivateContent>
   );
 };
 

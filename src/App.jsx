@@ -1,4 +1,4 @@
-import AppRoutes from "./routes";
+import AppRoutes from "./routes/routes";
 
 import GlobalStyle from "./styles/global";
 import { BaseContainer } from "./styles/Container";
