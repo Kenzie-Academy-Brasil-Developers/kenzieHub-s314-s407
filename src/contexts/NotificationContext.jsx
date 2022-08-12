@@ -1,30 +1,41 @@
-import { useState } from "react";
 import { createContext } from "react";
-import AuthProvider from "./AuthContext";
+import { toast } from "react-toastify";
 
-export const NotfContext = createContext({});
+import ToastBox from "../components/NotificationBox";
+import AuthProvider from "./AuthContext";
+import "react-toastify/dist/ReactToastify.css";
+
+export const NotificationContext = createContext({});
 
 const NotficationProvider = ({ children }) => {
-  const [notifications, setNotifications] = useState([]);
+  const baseSettings = {
+    position: "top-right",
+    autoClose: 4000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    theme: "dark",
+  };
 
-  const notify = (input, type) => {
-    const listCap = notifications.length < 3;
-    const notDoubled = !notifications.some((notf, index, arr) => arr.indexOf(notf.message) === index)
+  const updateToast = (loader, message, toastType) => {
+    const settings = {
+      ...baseSettings,
+      render: message,
+      type: toastType,
+      isLoading: false,
+    };
 
-    if (listCap && notDoubled) {
-      setNotifications([...notifications, {message: input, type: type}]);
-
-      setTimeout(
-        () => setNotifications([]),
-        notifications.length > 0 ? 5000 : 10000
-      );
-    }
+    toast.update(loader, settings);
   };
 
   return (
-    <NotfContext.Provider value={{ notifications, notify }}>
-      <AuthProvider>{children}</AuthProvider>
-    </NotfContext.Provider>
+    <NotificationContext.Provider value={{ updateToast, toast, baseSettings }}>
+      <AuthProvider>
+        {children}
+        <ToastBox />
+      </AuthProvider>
+    </NotificationContext.Provider>
   );
 };
 

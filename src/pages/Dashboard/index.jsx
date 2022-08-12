@@ -3,18 +3,19 @@ import { useNavigate } from "react-router-dom";
 
 import Button from "../../components/Button";
 import { AuthContext } from "../../contexts/AuthContext";
-import { NotfContext } from "../../contexts/NotificationContext";
+import { NotificationContext } from "../../contexts/NotificationContext";
 
 import { DashboardPage, Header } from "./styles";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
-  const { notify } = useContext(NotfContext);
+  const { toast, baseSettings } = useContext(NotificationContext);
 
   const handleLogout = () => {
+    
+    toast.info("Logout realizado com sucesso", baseSettings);
     window.localStorage.clear();
-    notify(`Até a próxima ${user.name.split(" ")[0]}!`);
     navigate("/login");
   };
 

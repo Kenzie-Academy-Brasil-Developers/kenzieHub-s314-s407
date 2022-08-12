@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { createContext, useState } from "react";
 import api from "../services/api";
-import { NotfContext } from "./NotificationContext";
+import { NotificationContext } from "./NotificationContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
@@ -11,14 +11,15 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
 
-  const { notify } = useContext(NotfContext);
+  const { updateToast, toast, baseSettings } = useContext(NotificationContext);
   const location = useLocation();
   const navigate = useNavigate();
 
   const signIn = async (data) => {
+    const load = toast.loading("Solicitação em andamento...", baseSettings);
     const response = await api
       .post("/sessions", data)
-      .catch(() => notify("Usuário ou senha incorretos", "FAIL"));
+      .catch(() => updateToast(load, "Email ou senha inválidos", "error"));
 
     if (response) {
       const { token, user: userData } = response.data;
@@ -27,14 +28,21 @@ const AuthProvider = ({ children }) => {
       api.defaults.headers.authorization = `Bearer ${token}`;
 
       setUser(userData);
-      notify(`Bem vindo ${userData.name.split(" ")[0]}`, "SUCCESS");
+      updateToast(load, `Bem vindo ${userData.name.split(" ")[0]}`, "success");
 
       const navigatePath = location.state?.from?.pathname || "/dashboard";
       navigate(navigatePath, { replace: true });
     }
   };
 
-  const register = async ({ name, email, password, bio, contact, course_module }) => {
+  const register = async ({
+    name,
+    email,
+    password,
+    bio,
+    contact,
+    course_module,
+  }) => {
     const options = {
       name: name,
       email: email,
@@ -44,12 +52,23 @@ const AuthProvider = ({ children }) => {
       course_module: course_module,
     };
 
-    const response = await api
-      .post("/users", options)
-      .catch(() => notify("Email atualmente em uso", "FAIL"));
+    const load = toast.loading("Solicitação em andamento...", baseSettings);
+    const response = await api.post("/users", options).catch(() =>
+      toast.update(load, {
+        render: "Este email já está em uso",
+        type: "error",
+        isLoading: false,
+        ...baseSettings,
+      })
+    );
 
     if (response) {
-      notify("Conta criada com sucesso!", "SUCCESS");
+      toast.update(load, {
+        render: "Conta criada com sucesso",
+        type: "success",
+        isLoading: false,
+        ...baseSettings,
+      });
       navigate("/login");
     }
   };
