@@ -29,7 +29,7 @@ const UpdateTech = () => {
       setUser(userData);
       // prettier-ignore
       updateToast(load, "Tecnologia alterada com sucesso", "success");
-      modalSwitcher("remove_tech", {});
+      modalSwitcher("update_tech", {});
     }
   };
 
