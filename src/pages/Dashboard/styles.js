@@ -81,12 +81,12 @@ export const DashboardContent = styled.main`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 1rem;
 
     span {
       font-size: 0.8rem;
       font-weight: 400;
       color: var(--color-grey-1);
+      padding-right: 0.5rem;
     }
 
     button {
@@ -128,6 +128,13 @@ export const DashboardContent = styled.main`
       width: fit-content;
       padding: 0.5rem;
       color: var(--color-grey-1);
+      transition: 100ms ease-in-out;
+
+      &:hover {
+        border-color: var(--color-grey-0);
+        color: var(--color-grey-0);
+        background-color: var(--color-grey-2);
+      }
     }
   }
 

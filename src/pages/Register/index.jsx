@@ -8,11 +8,12 @@ import CustomInput from "../../components/Input";
 import Formulary from "../../components/Formulary";
 import registerSchema from "../../validators/register";
 import { AuthContext } from "../../contexts/AuthContext";
+import { moduleOptions } from "../../components/Input/options";
 
 const Register = () => {
   const navigate = useNavigate();
-  const { register: registerUser } = useContext(AuthContext)
-  
+  const { register: registerUser } = useContext(AuthContext);
+
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(registerSchema),
   });
@@ -78,13 +79,10 @@ const Register = () => {
           label="Módulo"
           register={register}
           error={errors?.course_module}
+          options={moduleOptions}
         />
 
-        <Button
-          submit
-          buttonStyle="primary"
-          type="submit"
-        >
+        <Button submit buttonStyle="primary" type="submit">
           Cadastrar
         </Button>
       </Formulary>

@@ -33,9 +33,7 @@ export const NavBar = styled.nav`
   }
 
   @media (min-width: 1100px) {
-    padding: 1.2rem 0;
-    justify-content: center;
-    gap: 45rem;
+    padding: 1.2rem 15rem;
   }
 `;
 
@@ -70,7 +68,6 @@ export const UserInfos = styled.section`
 
   @media (min-width: 1100px) {
     padding: 0;
-    justify-content: center;
-    gap: 30rem;
+    padding: 0 15rem;
   }
 `;

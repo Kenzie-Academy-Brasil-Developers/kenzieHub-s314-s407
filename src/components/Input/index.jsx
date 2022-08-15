@@ -3,15 +3,7 @@ import Tooltip from "../Tooltip";
 
 import { StyledInput, StyledSelect } from "./styles";
 
-const CustomInput = ({
-  select,
-  id,
-  label,
-  type = "text",
-  placeholder,
-  register,
-  error,
-}) => {
+const CustomInput = ({ id, label, type = "text", placeholder, register, error, select, options }) => {
   const [blur, setBlur] = useState(false);
 
   const setBorder = () => {
@@ -32,11 +24,11 @@ const CustomInput = ({
           {...register(id)}
           onClick={() => setBlur(true)}
           onBlur={() => setBlur(false)}
-          defaultValue="Módulo 1: (Frontend básico)"
+          defaultValue={options[0].value}
         >
-          <option value="Módulo 1: Frontend básico">Módulo 1</option>
-          <option value="Módulo 2: Frontend avançado">Módulo 2</option>
-          <option value="Módulo 3: React">Módulo 3</option>
+          {options.map((option) => {
+            return <option value={option.value} key={option.id}>{option.name}</option>
+          })}
         </StyledSelect>
       ) : (
         <>
