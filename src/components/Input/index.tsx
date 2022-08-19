@@ -1,9 +1,19 @@
-import { useState } from "react";
+import { InputHTMLAttributes, useState } from "react";
+import { DeepRequired, FieldErrorsImpl, FieldValues, UseFormRegister } from "react-hook-form";
 import Tooltip from "../Tooltip";
+import { ISelectOptions } from "./options";
 
 import { StyledInput, StyledSelect } from "./styles";
 
-const CustomInput = ({ id, label, type = "text", placeholder, register, error, select, options }) => {
+interface IInputProps extends InputHTMLAttributes<HTMLInputElement> {
+  label: string;
+  register: UseFormRegister<FieldValues>;
+  error?: FieldErrorsImpl<DeepRequired<FieldValues>>;
+  select?: boolean;
+  options?: ISelectOptions[];
+}
+
+const CustomInput = ({ id, label, register, error, select, options, ...rest }: IInputProps) => {
   const [blur, setBlur] = useState(false);
 
   const setBorder = () => {
@@ -19,9 +29,7 @@ const CustomInput = ({ id, label, type = "text", placeholder, register, error, s
       <label htmlFor={id}>{label}</label>
       {select ? (
         <StyledSelect
-          id={id}
-          type={type}
-          {...register(id)}
+          {...register(id as string)}
           onClick={() => setBlur(true)}
           onBlur={() => setBlur(false)}
           defaultValue={options[0].value}
@@ -34,10 +42,8 @@ const CustomInput = ({ id, label, type = "text", placeholder, register, error, s
         <>
           <StyledInput border={setBorder}>
             <input
-              id={id}
-              type={type}
-              placeholder={placeholder}
-              {...register(id)}
+              {...rest}
+              {...register(id as string)}
               onClick={() => setBlur(true)}
               onBlur={() => setBlur(false)}
             />

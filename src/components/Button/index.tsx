@@ -1,6 +1,14 @@
+import { ReactNode } from "react";
 import { PrimaryButton, SecondaryButton } from "./styles";
 
-const Button = ({ buttonStyle, children, handler, submit = false }) =>
+interface IButtonProps {
+  buttonStyle?: string;
+  children?: ReactNode;
+  handler?: () => void;
+  submit?: boolean;
+}
+
+const Button = ({ buttonStyle, children, handler, submit = false }: IButtonProps) =>
   buttonStyle === "primary" ? (
     <PrimaryButton onClick={handler} buttonType={submit} type={submit ? "submit" : undefined}>{children}</PrimaryButton>
   ) : (

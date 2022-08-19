@@ -3,7 +3,7 @@ import { AiOutlineClose } from "react-icons/ai";
 
 import Button from "../Button";
 import Formulary from "../Formulary";
-import { AuthContext } from "../../contexts/AuthContext";
+import { AuthContext, ITech } from "../../contexts/AuthContext";
 import { SwitchContext } from "../../contexts/SwitchContext";
 
 const RemoveTech = () => {
@@ -16,12 +16,12 @@ const RemoveTech = () => {
         onSubmit={(event) => {
           event.preventDefault()
           removeTech();
-          modalSwitcher("remove_tech", {});
+          modalSwitcher("remove_tech", {} as ITech);
         }}
       >
         <header>
           <h3>Remover Tecnologia</h3>
-          <AiOutlineClose onClick={() => modalSwitcher("remove_tech", {})} />
+          <AiOutlineClose onClick={() => modalSwitcher("remove_tech", {} as ITech)} />
         </header>
         <h3>
           Tem certeza que deseja remover "{focus.title}" de seu portfólio de
@@ -33,7 +33,7 @@ const RemoveTech = () => {
           </Button>
           <Button
             buttonStyle="primary"
-            handler={() => modalSwitcher("remove_tech", {})}
+            handler={() => modalSwitcher("remove_tech", {} as ITech)}
           >
             Não
           </Button>
