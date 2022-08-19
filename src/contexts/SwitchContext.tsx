@@ -1,30 +1,14 @@
-import { ReactNode, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { createContext } from "react";
 import CustomModal from "../components/Modal";
-import { AuthContext, ITech } from "./AuthContext";
-
-interface ISwitchProps {
-  children: ReactNode;
-}
-
-interface IModalOpener {
-  modal_window: boolean;
-  create_tech: boolean;
-  update_tech: boolean;
-  remove_tech: boolean;
-  create_work: boolean;
-  update_work: boolean;
-  remove_work: boolean;
-}
-
-interface ISwitchProvider {
-  isOpened: IModalOpener;
-  modalSwitcher: (type: keyof IModalOpener, focused: ITech) => void;
-}
+import { ITech } from "../types/typeAuthContext";
+import { IGeneralProps } from "../types/typeComponents";
+import { IModalOpener, ISwitchProvider } from "../types/typeSwitchContext";
+import { AuthContext } from "./AuthContext";
 
 export const SwitchContext = createContext<ISwitchProvider>({} as ISwitchProvider);
 
-const SwitchProvider = ({ children }: ISwitchProps) => {
+const SwitchProvider = ({ children }: IGeneralProps) => {
   const [isOpened, setIsOpened] = useState<IModalOpener>({
     modal_window: false,
     create_tech: false,
@@ -35,21 +19,21 @@ const SwitchProvider = ({ children }: ISwitchProps) => {
     remove_work: false,
   });
 
-  const { setFocus } = useContext(AuthContext);
+  const { focus, setFocus } = useContext(AuthContext);
 
-  const modalSwitcher = (type: keyof IModalOpener, focused: ITech) => {
+  const modalSwitcher = (type: keyof IModalOpener, focused?: ITech) => {
     let backup = isOpened;
     backup.modal_window = !backup.modal_window;
     backup[type] = !backup[type];
 
     setIsOpened({ ...backup });
-    setFocus(focused);
+    setFocus(focused ? focused : focus);
   };
 
   return (
     <SwitchContext.Provider value={{ isOpened, modalSwitcher }}>
       {children}
-      <CustomModal />
+      {isOpened.modal_window && <CustomModal />}
     </SwitchContext.Provider>
   );
 };
