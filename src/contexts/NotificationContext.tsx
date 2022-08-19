@@ -1,27 +1,19 @@
 import { createContext } from "react";
 //  prettier-ignore
-import { Id, toast, ToastContent, ToastOptions, UpdateOptions } from "react-toastify";
+import { Id, toast, ToastOptions, UpdateOptions } from "react-toastify";
 
-import ToastBox from "../components/ToastBox";
 import AuthProvider from "./AuthContext";
-import { ReactNode } from "react";
+import ToastBox from "../components/ToastBox";
+import { INotificationProvider } from "../types/typeNotificationContext";
 
 import "react-toastify/dist/ReactToastify.css";
-
-interface INotificationProps {
-  children: ReactNode;
-}
-
-interface INotificationProvider {
-  updateToast: (loader: Id, message: string, toastType: string) => void;
-  loadPattern: [ToastContent, ToastOptions];
-}
+import { IGeneralProps } from "../types/typeComponents";
 
 export const NotificationContext = createContext<INotificationProvider>(
   {} as INotificationProvider
 );
 
-const NotficationProvider = ({ children }: INotificationProps) => {
+const NotficationProvider = ({ children }: IGeneralProps) => {
   const baseSettings = {
     position: "top-right",
     autoClose: 4000,
@@ -49,7 +41,7 @@ const NotficationProvider = ({ children }: INotificationProps) => {
   ] as INotificationProvider["loadPattern"];
 
   return (
-    <NotificationContext.Provider value={{ updateToast, loadPattern }}>
+    <NotificationContext.Provider value={{ updateToast, loadPattern, baseSettings }}>
       <AuthProvider>
         {children}
         <ToastBox />
