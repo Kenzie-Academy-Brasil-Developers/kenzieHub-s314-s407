@@ -1,23 +1,14 @@
-import { InputHTMLAttributes, useState } from "react";
-import { DeepRequired, FieldErrorsImpl, FieldValues, UseFormRegister } from "react-hook-form";
+import { useState } from "react";
+import { IInputProps } from "../../types/typeComponents";
 import Tooltip from "../Tooltip";
-import { ISelectOptions } from "./options";
 
 import { StyledInput, StyledSelect } from "./styles";
-
-interface IInputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label: string;
-  register: UseFormRegister<FieldValues>;
-  error?: FieldErrorsImpl<DeepRequired<FieldValues>>;
-  select?: boolean;
-  options?: ISelectOptions[];
-}
 
 const CustomInput = ({ id, label, register, error, select, options, ...rest }: IInputProps) => {
   const [blur, setBlur] = useState(false);
 
   const setBorder = () => {
-    return error?.message
+    return error
       ? "1px solid var(--color-negative)"
       : blur
       ? "1px solid var(--color-grey-0)"
@@ -29,12 +20,13 @@ const CustomInput = ({ id, label, register, error, select, options, ...rest }: I
       <label htmlFor={id}>{label}</label>
       {select ? (
         <StyledSelect
+          border={setBorder}
           {...register(id as string)}
           onClick={() => setBlur(true)}
           onBlur={() => setBlur(false)}
-          defaultValue={options[0].value}
+          defaultValue={options && options[0].value}
         >
-          {options.map((option) => {
+          {options?.map((option) => {
             return <option value={option.value} key={option.id}>{option.name}</option>
           })}
         </StyledSelect>
@@ -47,7 +39,7 @@ const CustomInput = ({ id, label, register, error, select, options, ...rest }: I
               onClick={() => setBlur(true)}
               onBlur={() => setBlur(false)}
             />
-            {error?.message && <Tooltip>{error.message}</Tooltip>}
+            {error && <Tooltip>{error}</Tooltip>}
           </StyledInput>
         </>
       )}
