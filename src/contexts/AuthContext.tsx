@@ -1,104 +1,32 @@
-//  prettier-ignore
-import { createContext, useState, useContext, useEffect, ReactNode } from "react";
 import api from "../services/api";
+import { toast } from "react-toastify";
+import { SubmitHandler } from "react-hook-form";
+//  prettier-ignore
+import { createContext, useState, useContext, useEffect } from "react";
+
 import { NotificationContext } from "./NotificationContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import SwitchProvider from "./SwitchContext";
-import { toast } from "react-toastify";
-import { FieldValues } from "react-hook-form";
-
-interface IAuthProps {
-  children: ReactNode;
-}
-
-interface IAuthProvider {
-  user: IUser;
-  setUser: React.Dispatch<React.SetStateAction<IUser>>;
-  loading: boolean;
-  // prettier-ignore
-  register: ({ name, email, password, bio, contact, course_module }: IUserRegister) => Promise<void>;
-  signIn: (data: IUserSignIn) => Promise<void>;
-  removeTech: () => Promise<void>;
-  focus: ITech;
-  setFocus: React.Dispatch<React.SetStateAction<ITech>>;
-}
-
-export interface ITech {
-  id: string;
-  title: string;
-  status: string;
-  created_at: string;
-  updated_at: string | null;
-}
-
-interface IWork {
-  id: string;
-  title: string;
-  description: string;
-  deploy_url: string;
-  user: { id: IUser["id"] };
-  created_at: string;
-  updated_at: string | null;
-}
-
-export interface IUser {
-  id: string;
-  name: string;
-  email: string;
-  course_module: string;
-  bio: string;
-  contact: string;
-  techs: ITech[];
-  works: IWork[];
-  created_at: string;
-  updated_at: string;
-  avatar_url: string | null;
-}
-
-interface IUserRegister {
-  name: string;
-  email: string;
-  password: string;
-  bio: string;
-  contact: string;
-  course_module: string;
-}
-
-interface IUserSignIn {
-  email: string;
-  password: string;
-}
-
-interface ISignInResponse {
-  user: IUser;
-  token: string;
-}
-
-interface ISignInRequest {
-  email: string;
-  password: string;
-}
-
-interface ILoginRequest extends FieldValues {
-  [x: string]: ISignInRequest;
-}
+import { IGeneralProps } from "../types/typeComponents";
+//  prettier-ignore
+import { IAuthProvider, IStateType, ITech, IUser, ILoginRequest, IRegisterRequest } from "../types/typeAuthContext";
 
 export const AuthContext = createContext<IAuthProvider>({} as IAuthProvider);
 
-const AuthProvider = ({ children }: IAuthProps) => {
+const AuthProvider = ({ children }: IGeneralProps) => {
   const [user, setUser] = useState<IUser>({} as IUser);
   const [focus, setFocus] = useState<ITech>({} as ITech);
   const [loading, setLoading] = useState(true);
 
   const { updateToast, loadPattern } = useContext(NotificationContext);
-  const location = useLocation();
+  const { state } = useLocation();
+  const stateType = state as IStateType;
   const navigate = useNavigate();
 
-  const signIn = async (data: ILoginRequest) => {
+  const signIn: SubmitHandler<ILoginRequest> = async (data) => {
     const load = toast.loading(...loadPattern);
-    console.log(data);
     const response = await api
-      .post<ISignInResponse>("/sessions", data)
+      .post("/sessions", data)
       .catch(() => updateToast(load, "Email ou senha inválidos", "error"));
 
     if (response) {
@@ -110,13 +38,14 @@ const AuthProvider = ({ children }: IAuthProps) => {
       setUser(userData);
       updateToast(load, `Bem vindo ${userData.name.split(" ")[0]}`, "success");
 
-      const navigatePath = location.state?.from?.pathname || "/dashboard";
+      const navigatePath = stateType?.from?.pathname || "/dashboard";
       navigate(navigatePath, { replace: true });
     }
   };
 
-  // prettier-ignore
-  const register = async ({ name, email, password, bio, contact, course_module }: IUserRegister) => {
+  const register: SubmitHandler<IRegisterRequest> = async (
+    {name, email, password, bio, contact, course_module}
+    ) => {
     const options = {
       name: name,
       email: email,
@@ -140,8 +69,8 @@ const AuthProvider = ({ children }: IAuthProps) => {
   const removeTech = async () => {
     const load = toast.loading(...loadPattern);
     await api
-      .delete(`/users/techs/${focus.id}`)
-      .catch(() => toast.update(load));
+      .delete<void>(`/users/techs/${focus.id}`)
+      .catch<void>(() => toast.update(load));
 
     const { data } = await api.get("/profile");
     setUser(data);
@@ -163,7 +92,9 @@ const AuthProvider = ({ children }: IAuthProps) => {
           console.error(error);
         }
       }
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1500);
     };
     loadAuth();
   }, []);
