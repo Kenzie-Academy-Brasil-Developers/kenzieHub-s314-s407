@@ -30,8 +30,6 @@ export interface IWork {
   updated_at: string | null;
 }
 
-export type IUserCheck = IUser | {};
-
 export interface IUser {
   id: string;
   name: string;
@@ -55,6 +53,18 @@ export interface IRegisterRequest {
   contact?: string;
   course_module?: string;
   errors?: FieldErrorsImpl<DeepRequired<FieldValues>>;
+}
+
+export interface IRegisterResponse {
+  id: string;
+  name: string;
+  email: string;
+  course_module: string;
+  bio: string;
+  contact: string;
+  created_at: string;
+  updated_at: string;
+  avatar_url: string | null;
 }
 
 export interface ILoginRequest {

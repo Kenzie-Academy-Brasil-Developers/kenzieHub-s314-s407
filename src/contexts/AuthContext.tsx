@@ -9,7 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import SwitchProvider from "./SwitchContext";
 import { IGeneralProps } from "../types/typeComponents";
 //  prettier-ignore
-import { IAuthProvider, IStateType, ITech, IUser, ILoginRequest, IRegisterRequest } from "../types/typeAuthContext";
+import { IAuthProvider, IStateType, ITech, IUser, ILoginRequest, IRegisterRequest, ILoginResponse, IRegisterResponse } from "../types/typeAuthContext";
 
 export const AuthContext = createContext<IAuthProvider>({} as IAuthProvider);
 
@@ -26,7 +26,7 @@ const AuthProvider = ({ children }: IGeneralProps) => {
   const signIn: SubmitHandler<ILoginRequest> = async (data) => {
     const load = toast.loading(...loadPattern);
     const response = await api
-      .post("/sessions", data)
+      .post<ILoginResponse>("/sessions", data)
       .catch(() => updateToast(load, "Email ou senha inválidos", "error"));
 
     if (response) {
@@ -57,7 +57,7 @@ const AuthProvider = ({ children }: IGeneralProps) => {
 
     const load = toast.loading(...loadPattern);
     const response = await api
-      .post("/users", options)
+      .post<IRegisterResponse>("/users", options)
       .catch(() => updateToast(load, "Este email já está em uso", "error"));
 
     if (response) {
@@ -72,7 +72,7 @@ const AuthProvider = ({ children }: IGeneralProps) => {
       .delete<void>(`/users/techs/${focus.id}`)
       .catch<void>(() => toast.update(load));
 
-    const { data } = await api.get("/profile");
+    const { data } = await api.get<IUser>("/profile");
     setUser(data);
     data &&
       updateToast(load, "Tecnologia excluída de seu portfólio", "success");
@@ -85,7 +85,7 @@ const AuthProvider = ({ children }: IGeneralProps) => {
       if (token) {
         try {
           api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-          const { data } = await api.get("/profile");
+          const { data } = await api.get<IUser>("/profile");
 
           setUser(data);
         } catch (error) {

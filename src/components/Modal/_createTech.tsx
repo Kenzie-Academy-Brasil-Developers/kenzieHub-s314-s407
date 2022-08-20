@@ -14,6 +14,7 @@ import { SwitchContext } from "../../contexts/SwitchContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import { NotificationContext } from "../../contexts/NotificationContext";
 import { IAddTechRequest, IAddTechResponse } from "../../types/typeComponents";
+import { IUser } from "../../types/typeAuthContext";
 
 const CreateTech = () => {
   const { updateToast, loadPattern } = useContext(NotificationContext);
@@ -28,16 +29,16 @@ const CreateTech = () => {
   const addTech: SubmitHandler<IAddTechRequest> = async (data) => {
     const load = toast.loading(...loadPattern);
     try {
-      const { data: response } = await api.post("/users/techs", data)
-      const responseData = response as IAddTechResponse;
+      const { data: response } = await api.post<IAddTechResponse>("/users/techs", data)
+      // const responseData = response as IAddTechResponse;
 
-      updateToast(load, `${responseData.title} adicionado ao seu portfólio`, "success");
+      updateToast(load, `${response.title} adicionado ao seu portfólio`, "success");
       modalSwitcher("create_tech");
     } catch (error) {
       console.error(error);
       updateToast(load, "Tecnologia atualmente em seu portfólio", "warning");
     }
-    const { data: userData } = await api.get("/profile");
+    const { data: userData } = await api.get<IUser>("/profile");
     setUser(userData);
   };
   return (

@@ -11,7 +11,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { NotificationContext } from "../../contexts/NotificationContext";
 import { SwitchContext } from "../../contexts/SwitchContext";
 import { toast } from "react-toastify";
-import { ITech } from "../../types/typeAuthContext";
+import { ITech, IUser } from "../../types/typeAuthContext";
 import { IUpdateTechRequestModal } from "../../types/typeComponents";
 
 
@@ -26,7 +26,7 @@ const UpdateTech = () => {
       .put<ITech>(`users/techs/${focus.id}`, data)
       .catch(() => updateToast(load, "Opa, parece que algo quebrou", "error"));
 
-    const { data: userData } = await api.get("/profile");
+    const { data: userData } = await api.get<IUser>("/profile");
     if (response) {
       setUser(userData);
       // prettier-ignore
