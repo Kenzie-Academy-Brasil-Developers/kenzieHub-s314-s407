@@ -10,7 +10,7 @@ const PrivateRoutes = () => {
 
   if (loading) return <LoadingScreen />;
 
-  return user ? (
+  return user.id ? (
     <Outlet />
   ) : (
     <Navigate replace to="/login" state={{ from: location }} />
