@@ -1,8 +1,5 @@
 import styled from "styled-components";
-
-interface IStyledButton {
-  buttonType: boolean
-}
+import { IStyledButton } from "../../types/typeComponentsStyles";
 
 export const PrimaryButton = styled.button`
   height: 3rem;
