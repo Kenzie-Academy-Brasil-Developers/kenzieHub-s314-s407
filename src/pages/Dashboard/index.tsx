@@ -8,6 +8,7 @@ import PrivateContent from "../../components/PrivateContent";
 import { DashboardContent } from "./styles";
 import { AuthContext } from "../../contexts/AuthContext";
 import { SwitchContext } from "../../contexts/SwitchContext";
+import { ITech } from "../../types/typeAuthContext";
 
 const Dashboard = () => {
   const { user } = useContext(AuthContext);
@@ -41,7 +42,7 @@ const Dashboard = () => {
           }) : (
           <li className="list__empty">
             <h3>Parece que seu portfólio está vazio...</h3>
-            <button onClick={() => modalSwitcher("create_tech")}>Adicionar tecnologias</button>
+            <button onClick={() => modalSwitcher("create_tech", {} as ITech)}>Adicionar tecnologias</button>
           </li>
           )}
         </ul>

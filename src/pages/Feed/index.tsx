@@ -1,0 +1,12 @@
+import PrivateContent from "../../components/PrivateContent";
+
+const Feed = () => {
+    return (
+        <PrivateContent>
+            <h1>Feed KenzieHub</h1>
+            <p>Pedimos desculpas, ainda estamos trabalhando na construção desta página. Volte mais tarde poara mais novidades! (vai ter bolo 🤫)</p>
+        </PrivateContent>
+    )
+}
+
+export default Feed;
