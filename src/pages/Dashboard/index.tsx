@@ -24,7 +24,7 @@ const Dashboard = () => {
           </Button>
         </section>
         <ul className="content__list">
-          {user.techs.length > 0 ? user.techs.map((tech) => {
+          {user?.techs?.length > 0 ? user.techs.map((tech) => {
             return (
               <li className="list__skill" key={tech.id}>
                 <h4>{tech.title}</h4>

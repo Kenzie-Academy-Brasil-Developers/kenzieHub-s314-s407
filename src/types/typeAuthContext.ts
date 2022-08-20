@@ -30,6 +30,8 @@ export interface IWork {
   updated_at: string | null;
 }
 
+export type IUserCheck = IUser | {};
+
 export interface IUser {
   id: string;
   name: string;

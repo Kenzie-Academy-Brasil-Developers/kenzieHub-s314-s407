@@ -4,7 +4,7 @@ const Feed = () => {
     return (
         <PrivateContent>
             <h1>Feed KenzieHub</h1>
-            <p>Pedimos desculpas, ainda estamos trabalhando na construção desta página. Volte mais tarde poara mais novidades! (vai ter bolo 🤫)</p>
+            <p>Pedimos desculpas, ainda estamos trabalhando na construção desta página. Volte mais tarde para mais novidades! (vai ter bolo 🤫)</p>
         </PrivateContent>
     )
 }
