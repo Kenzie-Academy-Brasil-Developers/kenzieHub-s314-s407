@@ -1,23 +1,29 @@
-import { createContext, useState, useContext, useEffect } from "react";
 import api from "../services/api";
+import { toast } from "react-toastify";
+import { SubmitHandler } from "react-hook-form";
+//  prettier-ignore
+import { createContext, useState, useContext, useEffect } from "react";
+
 import { NotificationContext } from "./NotificationContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import SwitchProvider from "./SwitchContext";
+import { IGeneralProps } from "../types/typeComponents";
+//  prettier-ignore
+import { IAuthProvider, IStateType, ITech, IUser, ILoginRequest, IRegisterRequest } from "../types/typeAuthContext";
 
-export const AuthContext = createContext({});
+export const AuthContext = createContext<IAuthProvider>({} as IAuthProvider);
 
-const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [focus, setFocus] = useState(null)
+const AuthProvider = ({ children }: IGeneralProps) => {
+  const [user, setUser] = useState<IUser>({} as IUser);
+  const [focus, setFocus] = useState<ITech>({} as ITech);
   const [loading, setLoading] = useState(true);
 
-  const { updateToast, toast, baseSettings } = useContext(NotificationContext);
-  const location = useLocation();
+  const { updateToast, loadPattern } = useContext(NotificationContext);
+  const { state } = useLocation();
+  const stateType = state as IStateType;
   const navigate = useNavigate();
 
-  const loadPattern = ["Solicitação em andamento...", baseSettings];
-
-  const signIn = async (data) => {
+  const signIn: SubmitHandler<ILoginRequest> = async (data) => {
     const load = toast.loading(...loadPattern);
     const response = await api
       .post("/sessions", data)
@@ -27,18 +33,19 @@ const AuthProvider = ({ children }) => {
       const { token, user: userData } = response.data;
 
       localStorage.setItem("@kenzieHub(token)", token);
-      api.defaults.headers.authorization = `Bearer ${token}`;
+      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
       setUser(userData);
       updateToast(load, `Bem vindo ${userData.name.split(" ")[0]}`, "success");
 
-      const navigatePath = location.state?.from?.pathname || "/dashboard";
+      const navigatePath = stateType?.from?.pathname || "/dashboard";
       navigate(navigatePath, { replace: true });
     }
   };
 
-  // prettier-ignore
-  const register = async ({ name, email, password, bio, contact, course_module }) => {
+  const register: SubmitHandler<IRegisterRequest> = async (
+    {name, email, password, bio, contact, course_module}
+    ) => {
     const options = {
       name: name,
       email: email,
@@ -61,7 +68,9 @@ const AuthProvider = ({ children }) => {
 
   const removeTech = async () => {
     const load = toast.loading(...loadPattern);
-    await api.delete(`/users/techs/${focus.id}`).catch(() => toast.update(load, ));
+    await api
+      .delete<void>(`/users/techs/${focus.id}`)
+      .catch<void>(() => toast.update(load));
 
     const { data } = await api.get("/profile");
     setUser(data);
@@ -75,7 +84,7 @@ const AuthProvider = ({ children }) => {
 
       if (token) {
         try {
-          api.defaults.headers.authorization = `Bearer ${token}`;
+          api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
           const { data } = await api.get("/profile");
 
           setUser(data);
@@ -83,13 +92,16 @@ const AuthProvider = ({ children }) => {
           console.error(error);
         }
       }
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1500);
     };
     loadAuth();
   }, []);
 
   return (
     <AuthContext.Provider
+      //  prettier-ignore
       value={{ user, setUser, loading, register, signIn, removeTech, focus, setFocus }}
     >
       <SwitchProvider>{children}</SwitchProvider>

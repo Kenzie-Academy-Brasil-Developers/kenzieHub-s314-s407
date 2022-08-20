@@ -9,13 +9,11 @@ const CustomModal = () => {
   const { isOpened } = useContext(SwitchContext);
 
   return (
-    isOpened.modal_window && (
-      <StyledModal>
-        <CreateTech />
-        <RemoveTech />
-        <UpdateTech />
-      </StyledModal>
-    )
+    <StyledModal>
+      {isOpened.create_tech && <CreateTech />}
+      {isOpened.remove_tech && <RemoveTech />}
+      {isOpened.update_tech && <UpdateTech />}
+    </StyledModal>
   );
 };
 

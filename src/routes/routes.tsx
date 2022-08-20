@@ -9,7 +9,7 @@ import Dashboard from "../pages/Dashboard";
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route index path="/login" element={<Login />} />
+      <Route path="/login" element={<Login />} />
       <Route element={<PrivateRoutes />}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/feed" element={<Feed />} />

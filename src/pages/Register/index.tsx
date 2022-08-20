@@ -9,12 +9,13 @@ import Formulary from "../../components/Formulary";
 import registerSchema from "../../validators/register";
 import { AuthContext } from "../../contexts/AuthContext";
 import { moduleOptions } from "../../components/Input/options";
+import { IRegisterRequest } from "../../types/typeAuthContext";
 
 const Register = () => {
   const navigate = useNavigate();
   const { register: registerUser } = useContext(AuthContext);
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const { register, handleSubmit, formState: { errors } } = useForm<IRegisterRequest>({
     resolver: yupResolver(registerSchema),
   });
 
@@ -33,14 +34,14 @@ const Register = () => {
           label="Nome"
           placeholder="Digite aqui seu nome"
           register={register}
-          error={errors?.name}
+          error={errors?.name?.message}
         />
         <CustomInput
           id="email"
           label="Email"
           placeholder="Digite aqui seu email"
           register={register}
-          error={errors?.email}
+          error={errors?.email?.message}
         />
         <CustomInput
           id="password"
@@ -48,7 +49,7 @@ const Register = () => {
           label="Senha"
           placeholder="Digite aqui sua senha"
           register={register}
-          error={errors?.password}
+          error={errors?.password?.message}
         />
         <CustomInput
           id="password_confirm"
@@ -56,14 +57,14 @@ const Register = () => {
           label="Confirmar senha"
           placeholder="Digite novamente sua senha"
           register={register}
-          error={errors?.password_confirm}
+          error={errors?.password_confirm?.message}
         />
         <CustomInput
           id="bio"
           label="Bio"
           placeholder="Fale sobre você"
           register={register}
-          error={errors?.bio}
+          error={errors?.bio?.message}
         />
         <CustomInput
           id="contact"
@@ -71,18 +72,18 @@ const Register = () => {
           type="phone"
           placeholder="(00) 00000-0000"
           register={register}
-          error={errors?.contact}
+          error={errors?.contact?.message}
         />
         <CustomInput
           select
           id="course_module"
           label="Módulo"
           register={register}
-          error={errors?.course_module}
+          error={errors?.course_module?.message}
           options={moduleOptions}
         />
 
-        <Button submit buttonStyle="primary" type="submit">
+        <Button submit buttonStyle="primary">
           Cadastrar
         </Button>
       </Formulary>

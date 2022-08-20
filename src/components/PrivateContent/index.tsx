@@ -4,10 +4,11 @@ import { toast } from "react-toastify";
 import { AuthContext } from "../../contexts/AuthContext";
 
 import { NotificationContext } from "../../contexts/NotificationContext";
+import { IGeneralProps } from "../../types/typeComponents";
 import Button from "../Button";
 import { Header, NavBar, PageBase, UserInfos } from "./styles";
 
-const PrivateContent = ({ children }) => {
+const PrivateContent = ({ children }: IGeneralProps) => {
   const { baseSettings } = useContext(NotificationContext);
   const { user } = useContext(AuthContext);
   const navigate = useNavigate()

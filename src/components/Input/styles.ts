@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { IStyledInput } from "../../types/typeComponentsStyles";
 
 export const StyledInput = styled.div`
   background-color: var(--color-grey-2);
@@ -9,7 +10,7 @@ export const StyledInput = styled.div`
   box-sizing: border-box;
   padding: 0 0.75rem;
   border-radius: 4px;
-  border: ${({border}) => border()};
+  border: ${({ border }: IStyledInput) => border()};
   transition: 200ms ease-in-out;
   position: relative;
 
@@ -32,14 +33,13 @@ export const StyledInput = styled.div`
   }
 `;
 
-export const StyledSelect = styled.select`
+export const StyledSelect = styled.select<IStyledInput>`
   background-color: var(--color-grey-2);
   height: 3rem;
   box-sizing: border-box;
   padding-left: 0.5rem;
   border-radius: 4px;
-  border: ${({ isSelected }) =>
-    isSelected ? "1px solid var(--color-grey-0)" : "1px solid transparent"};
+  border: ${({ border }: IStyledInput) => border()};
   transition: 200ms ease-in-out;
   color: var(--color-grey-0);
   outline: none;

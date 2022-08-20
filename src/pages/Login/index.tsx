@@ -8,12 +8,13 @@ import Formulary from "../../components/Formulary";
 import CustomInput from "../../components/Input";
 import Button from "../../components/Button";
 import { AuthContext } from "../../contexts/AuthContext";
+import { ILoginRequest } from "../../types/typeAuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
   const { signIn } = useContext(AuthContext);
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const { register, handleSubmit, formState: { errors } } = useForm<ILoginRequest>({
     resolver: yupResolver(loginSchema),
   });
 
@@ -28,7 +29,7 @@ const Login = () => {
           type="email"
           placeholder="Insira seu email"
           register={register}
-          error={errors?.email}
+          error={errors?.email?.message}
         />
         <CustomInput
           id="password"
@@ -36,7 +37,7 @@ const Login = () => {
           type="password"
           placeholder="Insira sua senha"
           register={register}
-          error={errors?.password}
+          error={errors?.password?.message}
         />
 
         <Button submit buttonStyle="primary">

@@ -1,13 +1,14 @@
 import { useState } from "react";
+import { IInputProps } from "../../types/typeComponents";
 import Tooltip from "../Tooltip";
 
 import { StyledInput, StyledSelect } from "./styles";
 
-const CustomInput = ({ id, label, type = "text", placeholder, register, error, select, options }) => {
+const CustomInput = ({ id, label, register, error, select, options, ...rest }: IInputProps) => {
   const [blur, setBlur] = useState(false);
 
   const setBorder = () => {
-    return error?.message
+    return error
       ? "1px solid var(--color-negative)"
       : blur
       ? "1px solid var(--color-grey-0)"
@@ -19,14 +20,13 @@ const CustomInput = ({ id, label, type = "text", placeholder, register, error, s
       <label htmlFor={id}>{label}</label>
       {select ? (
         <StyledSelect
-          id={id}
-          type={type}
-          {...register(id)}
+          border={setBorder}
+          {...register(id as string)}
           onClick={() => setBlur(true)}
           onBlur={() => setBlur(false)}
-          defaultValue={options[0].value}
+          defaultValue={options && options[0].value}
         >
-          {options.map((option) => {
+          {options?.map((option) => {
             return <option value={option.value} key={option.id}>{option.name}</option>
           })}
         </StyledSelect>
@@ -34,14 +34,12 @@ const CustomInput = ({ id, label, type = "text", placeholder, register, error, s
         <>
           <StyledInput border={setBorder}>
             <input
-              id={id}
-              type={type}
-              placeholder={placeholder}
-              {...register(id)}
+              {...rest}
+              {...register(id as string)}
               onClick={() => setBlur(true)}
               onBlur={() => setBlur(false)}
             />
-            {error?.message && <Tooltip>{error.message}</Tooltip>}
+            {error && <Tooltip>{error}</Tooltip>}
           </StyledInput>
         </>
       )}

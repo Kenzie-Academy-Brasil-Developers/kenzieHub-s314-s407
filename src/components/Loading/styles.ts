@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { AiOutlineLoading3Quarters, AiOutlineLoading } from "react-icons/ai";
+import { ILoadStyleProps } from "../../types/typeComponentsStyles";
 
 export const Loading = styled.div`
   display: flex;
@@ -23,7 +24,7 @@ export const Loading = styled.div`
   }
 `;
 
-export const TqIcon = styled(AiOutlineLoading3Quarters)`
+export const TqIcon = styled(AiOutlineLoading3Quarters)<ILoadStyleProps>`
   --origin: ${({ origin }) => `${origin}deg`};
   --is-reverse: ${({ reverse = false }) => (!reverse ? "360deg" : "-360deg")};
 
@@ -35,7 +36,7 @@ export const TqIcon = styled(AiOutlineLoading3Quarters)`
   animation: standart-spin infinite ${({ duration }) => `${duration}ms`} linear;
 `;
 
-export const QuarterIcon = styled(AiOutlineLoading)`
+export const QuarterIcon = styled(AiOutlineLoading)<ILoadStyleProps>`
   --origin: ${({ origin }) => `${origin}deg`};
   --is-reverse: ${({ reverse = false }) => (!reverse ? "360deg" : "-360deg")};
 

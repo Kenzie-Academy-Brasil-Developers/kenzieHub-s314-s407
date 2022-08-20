@@ -1,3 +1,9 @@
+export interface ISelectOptions {
+  id: string;
+  name: string;
+  value: string;
+}
+
 export const moduleOptions = [
   {
     id: "mod1",
@@ -14,7 +20,7 @@ export const moduleOptions = [
     name: "Módulo 3",
     value: "Módulo 3: React",
   },
-];
+] as ISelectOptions[];
 
 export const techStatus = [
   {
@@ -32,4 +38,4 @@ export const techStatus = [
     name: "Avançado",
     value: "Avançado",
   },
-];
+] as ISelectOptions[];
