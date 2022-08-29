@@ -110,9 +110,3 @@ const AuthProvider = ({ children }: IGeneralProps) => {
 };
 
 export default AuthProvider;
-
-const l1 = "oi"
-const l2 = "oi"
-const l4 = "oi"
-const l5 = "oi"
-const l6 = "oi"
