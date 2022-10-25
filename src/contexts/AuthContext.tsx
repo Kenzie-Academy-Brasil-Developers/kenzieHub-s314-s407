@@ -1,14 +1,12 @@
 import api from "../services/api";
 import { toast } from "react-toastify";
 import { SubmitHandler } from "react-hook-form";
-//  prettier-ignore
 import { createContext, useState, useContext, useEffect } from "react";
 
 import { NotificationContext } from "./NotificationContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import SwitchProvider from "./SwitchContext";
 import { IGeneralProps } from "../types/typeComponents";
-//  prettier-ignore
 import { IAuthProvider, IStateType, ITech, IUser, ILoginRequest, IRegisterRequest, ILoginResponse, IRegisterResponse } from "../types/typeAuthContext";
 
 export const AuthContext = createContext<IAuthProvider>({} as IAuthProvider);
@@ -59,7 +57,7 @@ const AuthProvider = ({ children }: IGeneralProps) => {
     const response = await api
       .post<IRegisterResponse>("/users", options)
       .catch(() => updateToast(load, "Este email já está em uso", "error"));
-
+      
     if (response) {
       updateToast(load, "Conta criada com sucesso", "success");
       navigate("/login");
@@ -101,7 +99,6 @@ const AuthProvider = ({ children }: IGeneralProps) => {
 
   return (
     <AuthContext.Provider
-      //  prettier-ignore
       value={{ user, setUser, loading, register, signIn, removeTech, focus, setFocus }}
     >
       <SwitchProvider>{children}</SwitchProvider>
